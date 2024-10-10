@@ -6,6 +6,25 @@ import { combineDocuments } from "/utils/combineDocuments";
 import { RunnablePassthrough, RunnableSequence } from "langchain/schema/runnable";
 import { formatConvHistory } from "/utils/formatConvHistory";
 
+function createSpeechBubble(text, isHuman) {
+    const newSpeechBubble = document.createElement("div");
+    newSpeechBubble.classList.add("speech", isHuman ? "speech-human" : "speech-ai");
+    newSpeechBubble.textContent = text;
+    return newSpeechBubble;
+}
+
+const chatbotConversation = document.getElementById("chatbot-conversation-container");
+const convHistory = localStorage.getItem("convHistory") ? JSON.parse(localStorage.getItem("convHistory")) : [];
+
+document.addEventListener("DOMContentLoaded", () => {
+    convHistory.forEach((message, index) => {
+        const isHuman = index % 2 === 0;
+        const speechBubble = createSpeechBubble(message, isHuman);
+        chatbotConversation.appendChild(speechBubble);
+    });
+    chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+});
+
 document.addEventListener("submit", (e) => {
     e.preventDefault();
     progressConversation();
@@ -45,31 +64,27 @@ const chain = RunnableSequence.from([
     answerChain,
 ]);
 
-const convHistory = [];
-
 async function progressConversation() {
     const userInput = document.getElementById("user-input");
-    const chatbotConversation = document.getElementById("chatbot-conversation-container");
     const question = userInput.value;
     userInput.value = "";
 
     // add human message
-    const newHumanSpeechBubble = document.createElement("div");
-    newHumanSpeechBubble.classList.add("speech", "speech-human");
+    const newHumanSpeechBubble = createSpeechBubble(question, true);
     chatbotConversation.appendChild(newHumanSpeechBubble);
-    newHumanSpeechBubble.textContent = question;
+
     chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+
     const response = await chain.invoke({
         question: question,
         conv_history: formatConvHistory(convHistory),
     });
     convHistory.push(question);
     convHistory.push(response);
+    localStorage.setItem("convHistory", JSON.stringify(convHistory));
 
     // add AI message
-    const newAiSpeechBubble = document.createElement("div");
-    newAiSpeechBubble.classList.add("speech", "speech-ai");
+    const newAiSpeechBubble = createSpeechBubble(response, false);
     chatbotConversation.appendChild(newAiSpeechBubble);
-    newAiSpeechBubble.textContent = response;
     chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
 }
