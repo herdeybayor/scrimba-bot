@@ -34,6 +34,23 @@ function createLoadingBubble() {
     return loadingBubble;
 }
 
+// Function to display the AI response with a typing effect
+function typeTextEffect(element, text, callback) {
+    let index = 0;
+
+    function typeNextChar() {
+        if (index < text.length) {
+            element.textContent += text[index];
+            index++;
+            setTimeout(typeNextChar, 50); // Adjust the typing speed here
+        } else if (callback) {
+            callback();
+        }
+    }
+
+    typeNextChar();
+}
+
 const chatbotConversation = document.getElementById("chatbot-conversation-container");
 const convHistory = [];
 
@@ -74,9 +91,12 @@ async function progressConversation() {
         // Remove loading indicator
         loadingBubble.remove();
 
-        // Add AI message
-        const newAiSpeechBubble = createSpeechBubble(answer, false);
+        // Add AI message with typing effect
+        const newAiSpeechBubble = createSpeechBubble("", false);
         chatbotConversation.appendChild(newAiSpeechBubble);
+
+        // Apply typing effect
+        typeTextEffect(newAiSpeechBubble, answer);
     } catch (error) {
         // Remove loading indicator
         loadingBubble.remove();
