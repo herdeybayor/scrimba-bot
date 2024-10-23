@@ -3,19 +3,22 @@
     --light-text: #fefefe;
 }
 
-*, *::before, *::after {
-    box-sizing: border-box;  
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
-    font-family: 'Poppins';
+    font-family: "Poppins";
 }
 
-main {    
+main {
     background-color: slategrey;
-    background-image: url('images/scrimba-bg.jpeg');
+    background-image: url("images/scrimba-bg.jpeg");
     background-size: cover;
     background-repeat: no-repeat;
     height: 100vh;
@@ -28,20 +31,22 @@ main {
 
 .chatbot-container {
     background-color: #171f26;
-    width: 360px;
-    min-height: 380px;
+    width: 90vw;
+    height: 90vh;
     border-radius: var(--border-rad-lg);
-    padding: 1em;  
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
 }
 
 .chatbot-container > * {
-    padding: .5em;   
+    padding: 0.5em;
 }
 
 .chatbot-header {
     display: flex;
     flex-direction: column;
-    gap: .6em;
+    gap: 0.6em;
 }
 
 .logo {
@@ -49,7 +54,6 @@ main {
 }
 
 .chatbot-conversation-container {
-    height: 250px;
     overflow-y: scroll;
     margin: 1em 0;
 }
@@ -65,10 +69,10 @@ main {
 
 .speech {
     padding: 1em;
-    max-width: 240px; 
+    max-width: 240px;
     color: var(--light-text);
     min-width: 90%;
-    border-radius: var(--border-rad-lg); 
+    border-radius: var(--border-rad-lg);
     font-size: 1.07em;
 }
 
@@ -77,22 +81,24 @@ main {
 }
 
 .speech-ai {
-	background: #334959;
+    background: #334959;
     border-top-left-radius: 0;
-    margin: 1.2em 1em 0 0; 
+    margin: 1.2em 1em 0 0;
 }
 
 .speech-human {
-    margin: 1.2em 0 0 1em; 
-	background: #2f4f4f;
-    border-top-right-radius: 0; 
+    margin: 1.2em 0 0 1em;
+    background: #2f4f4f;
+    border-top-right-radius: 0;
 }
 
 .chatbot-input-container {
     display: flex;
+    margin-top: auto;
 }
 
-input[type="text"], button {
+input[type="text"],
+button {
     background-color: transparent;
     border: 1px solid #586e88;
     border-radius: var(--border-rad-lg);
@@ -102,13 +108,13 @@ input[type="text"], button {
 input[type="text"] {
     color: var(--light-text);
     width: 100%;
-    border-right: 0; 
+    border-right: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 
 button {
-    border-left: 0; 
+    border-left: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
@@ -121,8 +127,23 @@ button {
 /* text */
 .sub-heading {
     color: #999999;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 12px;
     text-transform: uppercase;
     margin: 0;
+}
+
+@media (min-width: 768px) {
+    .chatbot-container {
+        width: 50vw;
+        height: 80vh;
+    }
+
+    .chatbot-conversation-container {
+        margin: 1em 0;
+    }
+
+    .speech {
+        max-width: 300px;
+    }
 }
